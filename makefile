@@ -33,39 +33,47 @@ SOURCES  := $(wildcard $(SRCDIR)/*.c)
 INCLUDES := $(wildcard $(SRCDIR)/*.h)
 OBJECTS  := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
+# linux commands
 rm       = rm -f
+mkdir 	 = mkdir -p
+
 
 $(BINDIR)/$(TARGET): $(OBJECTS)
+	@mkdir -p $(@D)
 	@$(LINKER) $(OBJECTS) $(LFLAGS) -o $@
 	@echo "Linking complete!"
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c
+	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Compiled "$<" successfully!"
 
 
-.PHONY: clean
+###########
+# Rules
+##########
+.PHONY: clean remove debug run test dir
+
 clean:
 	@$(rm) $(OBJECTS)
 	@echo "Cleanup complete!"
 
-.PHONY: remove
 remove: clean
 	@$(rm) $(BINDIR)/$(TARGET)
 	@echo "Executable removed!
 
-.PHONY: debug
 debug:
 	@echo Something is wrong...lets debug :/
 	 gdb ./$(BINDIR)/$(TARGET)
 
-.PHONY: run 
 run:
 	@echo RUN TARGET NORMALLY
 	 $(BINDIR)/$(TARGET)
 
-.PHONY: test
 test:
 	@echo Running TESTS....
 	 $(BINDIR)/$(TARGET) -t
+	
+
+
 
