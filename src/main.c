@@ -70,16 +70,18 @@ void getInput(){
 
 }
 
-void itobi(int num){
-
-  int rem= num/10;
-  printf("%d", rem);
-  if(rem < 0 ){
-    printf("done");
+char * itobi(int num){
+  
+  char str[8]  = " ";
+  printf("%d %d\n", num, num%2);
+  sprintf(str, "%d", num);
+  if(num <= 1 ){
+    sprintf(str, "%d", num%2);
+    return str;
   }else{
-    itobi(rem);
+    return itobi(num/2);
   }
-
+  
 }
 
 int main(int argc, char **argv) {    
@@ -109,7 +111,7 @@ int main(int argc, char **argv) {
     return(0);
   }
 
-  itobi(123);
+  printf("%s",itobi(12));
   /* getInput(); */
   return(0); 
 }
