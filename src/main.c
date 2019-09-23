@@ -9,6 +9,79 @@
 #define MAX   20
 #define MACHINE_CODE_LENGTH 32
 
+
+
+void getInput(){
+  // declaring some buffers
+  char input[MAX];
+  char machine_code[MACHINE_CODE_LENGTH] = {0};
+
+  // Get input from user
+  fgets(input, MAX, stdin);
+
+  char * op=NULL;
+  char * rs=NULL;
+  char * rt=NULL;
+  char * rd=NULL;
+  
+  // split by ','
+  op = strtok(input,",");
+  rs = strtok(NULL, ",");
+  // if Rs is NULL
+  // then there are only two fields
+  if(rs == NULL){
+    rs = strtok(op," ");
+    rs = strtok(NULL," "); // get second field
+    rs = strtok(rs,"\n");  // get rid of '\n'
+  }else { // get the rest of the fields
+    rt = strtok(NULL,",");
+    // take out '\n' 
+    rt = strtok(rt,"\n"); 
+    // take out the space
+    rd = strtok(op," ");
+    // get the second token
+    rd=strtok(NULL," ");
+  }
+
+  int opNum = 0, rsNum=0, rtNum = 0, rdNum = 0;
+
+  // If there are only two fields
+  if(rt == NULL){
+    rt = "0";
+    rd = "0";
+  }
+  rtNum = getReg(rt);
+  rdNum = getReg(rd);
+  opNum = getOp(op);
+  rsNum = getReg(rs);
+
+
+  // calculate machine code
+  
+
+  // Print out the values to the screen
+  printf("Operation: %s\n",op);
+  printf("Rs:%s (R%d)\n",rs, rsNum);
+  printf("Rt:%s (R%d)\n",rt, rtNum);
+  printf("Rd:%s (R%d)\n",rd, rdNum);
+  printf("Shamt: 0\n");
+  printf("Funct: %d\n", opNum);
+  printf("Machine Code: %s \n", machine_code);
+
+}
+
+void itobi(int num){
+
+  int rem= num/10;
+  printf("%d", rem);
+  if(rem < 0 ){
+    printf("done");
+  }else{
+    itobi(rem);
+  }
+
+}
+
 int main(int argc, char **argv) {    
 
   /**
@@ -36,51 +109,7 @@ int main(int argc, char **argv) {
     return(0);
   }
 
-  // declaring some buffers
-  char input[MAX];
-  char machine_code[MACHINE_CODE_LENGTH] = "0000000000000000000000";
-
-  // Get input from user
-  fgets(input, MAX, stdin);
-  
-  /**
-   * Split the input string
-   * add rs, rt, rd  -> "add rs" "rt" "rd"
-   * Extra work needs to be done to get rs
-   * add rs -> rs
-   */
-  char * op = strtok(input,",");
-  char * rt = strtok(NULL,",");
-  char * rd = strtok(NULL,",");
-  // removing white spaces from 
-  char * rs = strtok(op, " ");
-  // overide rs because we want the second value
-  rs = strtok(NULL," "); 
-
-  /* char * rd = strtok(NULL,","); */
-  printf("%s ", op);
-  printf("%s ", rs);
-  printf("%s ", rt);
-  printf("%s \n", rd);
-   /* getInstruction(); */
-  int opNum = getOp(op);
-  int rsNum = getReg(rs);
-  int rtNum = getReg(rt);
-  int rdNum = getReg(rd);
-
-
-  // calculate machine code
-  
-
-  // Print out the values to the screen
-  printf("Operation: %s\n",op);
-  printf("Rs:%s (R%d)\n",rs, rsNum);
-  printf("Rt:%s (R%d)\n",rt, rtNum);
-  printf("Rd:%s (R%d)\n",rd, rdNum);
-  printf("Shamt: 0\n");
-  printf("Funct: %d\n", opNum);
-  printf("Machine Code: %s \n", machine_code);
-          
-
+  itobi(123);
+  /* getInput(); */
   return(0); 
 }

@@ -52,7 +52,7 @@ $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c
 ###########
 # Rules
 ##########
-.PHONY: clean remove debug run test dir
+.PHONY: clean remove debug run test
 
 clean:
 	@$(rm) $(OBJECTS)
