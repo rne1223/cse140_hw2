@@ -9,6 +9,40 @@
 #define MAX   20
 #define MACHINE_CODE_LENGTH 32
 
+// recursive function to get the binary
+void inner(int num, char buffer[],  int base){
+  
+  char tmp[2]= {0};
+  if(num <= 1 ){
+    sprintf(tmp, "%d", num%2);
+    strcat(buffer, tmp);
+  }else{
+    sprintf(tmp, "%d", num%2);
+    strcat(buffer, tmp);
+    inner(num/base,buffer, base);
+  }
+}
+
+// function to 
+char * itobi(int num,int base){
+
+  char buffer[9];
+  inner(num,buffer,base);
+
+  char c[2];
+  c[1]='\0';
+  char *final= malloc(sizeof (char) * 9);
+  for(int i = 7; i >= 0; i--){
+    if(buffer[i]==0 ){
+      c[0] = '0';
+    } else
+      c[0] = buffer[i];
+
+    strcat(final,c);
+  }
+  /* printf("%s \n", final); */
+  return final;
+}
 
 
 void getInput(){
@@ -57,7 +91,21 @@ void getInput(){
 
 
   // calculate machine code
-  
+  char *t;
+  // Get binary of op
+  t = itobi(opNum,2);
+  strcat(machine_code, t);
+  free(t);
+  // Get binary of rs
+  t = itobi(rsNum,2);
+  strcat(machine_code, t);
+  free(t);
+  t = itobi(rtNum,2);
+  strcat(machine_code, t);
+  free(t);
+  t = itobi(rdNum,2);
+  strcat(machine_code, t);
+  free(t);
 
   // Print out the values to the screen
   printf("Operation: %s\n",op);
@@ -67,22 +115,9 @@ void getInput(){
   printf("Shamt: 0\n");
   printf("Funct: %d\n", opNum);
   printf("Machine Code: %s \n", machine_code);
-
 }
 
-char * itobi(int num){
-  
-  char str[8]  = " ";
-  printf("%d %d\n", num, num%2);
-  sprintf(str, "%d", num);
-  if(num <= 1 ){
-    sprintf(str, "%d", num%2);
-    return str;
-  }else{
-    return itobi(num/2);
-  }
-  
-}
+
 
 int main(int argc, char **argv) {    
 
@@ -110,8 +145,25 @@ int main(int argc, char **argv) {
     test_all();
     return(0);
   }
+  
+  /* int n = 10; */
+  /* char te[10] = {0}; */
+  
 
-  printf("%s",itobi(12));
+  /* char * p = itobi(8,2);  */
+  /* printf("8 : %s\n", p); */
+  /* free(t); */
+  // clear up the array
+  /* memset(te, 0, 10*sizeof(te[0])); */
+  /* itobi(2,te,2); */
+  /* printf("output:%s \n", te); */
+  /*  */
+  /* arr_size = sizeof(te)/sizeof(te[0]); */
+  /* printf("size of array:%d \n", arr_size); */
+  /*  */
+  /* printf("%d \n", te[7]); */
+
+  /* printf("%s",itobi(12)); */
   /* getInput(); */
   return(0); 
 }
